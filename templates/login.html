@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录与注册页面</title>
+    <link rel="stylesheet" href="static/css/login.css">
+</head>
+<body>
+
+<div class="login-container">
+    <!-- 登录表单 -->
+    <div id="loginFormContainer">
+        <h2>登录</h2>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="用户名" required><br>
+            <input type="password" id="password" placeholder="密码" required><br>
+            <button type="submit">登录</button>
+        </form>
+        <div id="errorMessage" class="error-message"></div>
+        <button id="showRegisterForm">没有账号? 注册</button>
+    </div>
+
+    <!-- 注册表单 -->
+    <div id="registerFormContainer" style="display:none;">
+        <h2>注册</h2>
+        <form id="registerForm">
+            <input type="text" id="registerUsername" placeholder="用户名" required><br>
+            <input type="password" id="registerPassword" placeholder="密码" required><br>
+            <input type="password" id="confirmPassword" placeholder="确认密码" required><br>
+            <button type="submit">注册</button>
+        </form>
+        <div id="registerErrorMessage" class="error-message"></div>
+        <button id="showLoginForm">已有账号? 登录</button>
+    </div>
+</div>
+
+<script src="../static/js/login.js"></script>
+</body>
+</html>
