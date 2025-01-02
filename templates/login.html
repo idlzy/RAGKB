@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登录与注册页面</title>
-    <link rel="stylesheet" href="static/css/login.css">
+    <link rel="stylesheet" href="../static/css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
 
@@ -13,8 +14,10 @@
     <div id="loginFormContainer">
         <h2>登录</h2>
         <form id="loginForm">
-            <input type="text" id="username" placeholder="用户名" required><br>
-            <input type="password" id="password" placeholder="密码" required><br>
+            <input type="text" id="username" placeholder="用户名" required>
+            <i class="fa-solid fa-user"></i>
+            <input type="password" id="password" placeholder="密码" required>
+            <i class="fa-solid fa-lock"></i>
             <button type="submit">登录</button>
         </form>
         <div id="errorMessage" class="error-message"></div>
@@ -25,9 +28,12 @@
     <div id="registerFormContainer" style="display:none;">
         <h2>注册</h2>
         <form id="registerForm">
-            <input type="text" id="registerUsername" placeholder="用户名" required><br>
-            <input type="password" id="registerPassword" placeholder="密码" required><br>
-            <input type="password" id="confirmPassword" placeholder="确认密码" required><br>
+            <input type="text" id="registerUsername" placeholder="用户名" required>
+            <i class="fa-solid fa-user"></i>
+            <input type="password" id="registerPassword" placeholder="密码" required>
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="confirmPassword" placeholder="确认密码" required>
+            <i class="fa-solid fa-lock"></i>
             <button type="submit">注册</button>
         </form>
         <div id="registerErrorMessage" class="error-message"></div>

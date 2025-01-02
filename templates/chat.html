@@ -8,7 +8,7 @@
     <style>
         /* 你可以自定义样式来实现转圈 */
         .loading {
-            display: inline-block ;
+            display: inline-block;
             width: 24px;
             height: 24px;
             border: 3px solid #f3f3f3;
@@ -21,19 +21,27 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
     </style>
 </head>
 <body>
+
+    <nav>
+        <a href="/kb">知识库</a>
+        <a href="/chat">Chat Bot</a>
+        <a href="#">帮助</a>
+    </nav>
+
     <div id="conversation">
         <!-- 历史对话内容显示区域 -->
     </div>
 
     <div id="input-container">
-        <form id="question-form" onsubmit="return submitQuestion(event)">
+        <form id="question-form" onsubmit="return submitQuestion(event)" style="flex-grow: 1; display: flex; align-items: center;">
             <input type="text" id="user-input" name="question" placeholder="请输入问题..." required>
         </form>
     </div>
-
+    
     <script src="../static/js/chat.js"></script>
 </body>
 </html>
