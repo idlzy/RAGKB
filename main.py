@@ -16,13 +16,11 @@ while True:
 
     messages.append({'role': 'user', 'content': f'{que}'})
 
-    completion = client.chat.completions.create(
+    response = client.chat.completions.create(
         model="qwen-plus", # 模型列表：https://help.aliyun.com/zh/model-studio/getting-started/models
         messages=messages
         )
-    json_data = json.loads(completion.model_dump_json())
-    
-    ans = json_data["choices"][0]["message"]["content"]
+    ans = response.choices[0].message.content
     messages.append({'role': 'assistant', 'content': f'{ans}'})
     # print(completion.model_dump_json())
     print("AI: ", ans)

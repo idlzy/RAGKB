@@ -3,6 +3,10 @@ from flask_cors import CORS
 from chat import ChatBot
 import pymysql
 import os
+from utils import EmbeddingModel,VectorBase
+import warnings
+warnings.filterwarnings('ignore', category=UserWarning)
+
 # 连接数据库
 connection = pymysql.connect(
     host='127.0.0.1',       # 数据库主机地址
@@ -14,10 +18,13 @@ connection = pymysql.connect(
 
 # 创建web app
 app = Flask(__name__)
+app.secret_key = 'lzy'
 # 实例化聊天机器人
 chatbot = ChatBot()
-app.secret_key = 'lzy'
-
+# 实例化embedding模型
+em= EmbeddingModel("paraphrase-multilingual-MiniLM-L12-v2")
+# 实例化向量数据库处理类
+vecbase = VectorBase(em,conn=connection,CosineSimilarityThreshold=0.25)
 
 
 
@@ -51,26 +58,23 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 # 允许上传的文件类型
-ALLOWED_EXTENSIONS = {'doc', 'docx','pdf'}
+ALLOWED_EXTENSIONS = {'docx','pdf'}
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/LoadFile', methods=['POST'])
 def LoadFile():
-    # if 'files[]' not in request.files:
-    #     return jsonify({'error': '没有文件部分'}), 400
     files = request.files.getlist('files[]')
-    print(files)
     if not files:
         return jsonify({'error': '没有选择文件'}), 400
-
     uploaded_files = []
     for file in files:
         if file and allowed_file(file.filename):
             filename = os.path.join(UPLOAD_FOLDER, file.filename)
             file.save(filename)
             uploaded_files.append(file.filename)
+            vecbase.generate(os.path.join(UPLOAD_FOLDER,file.filename),connection)
         else:
             return jsonify({'error': '文件类型不允许'}), 400
 
@@ -120,7 +124,6 @@ def register():
         return jsonify({"message": "注册失败,用户名已被使用"}), 401
     finally:
         cursor.close()
-        # connection.close()
     
     
 
@@ -128,8 +131,8 @@ def register():
 def question():
     # 获取用户提交的问题
     user_question = request.json.get('question')
-    bot_answer = chatbot.reply(user_question)
-    
+    rag_content = vecbase.search(user_question,connection)
+    bot_answer = chatbot.reply(user_question,rag_content)
     # 返回问题和答案
     return jsonify({
         'question': user_question,
@@ -138,4 +141,4 @@ def question():
 
 
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0')
+    app.run(debug=False,host='0.0.0.0')

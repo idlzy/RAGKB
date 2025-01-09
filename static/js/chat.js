@@ -42,6 +42,28 @@ function submitQuestion(event) {
         
         // 滚动到最新的消息
         conversation.scrollTop = conversation.scrollHeight;
+        saveConversation();
     })
     .catch(error => console.error('Error:', error));
+}
+
+
+ // 页面加载时恢复对话
+ window.addEventListener('load', function() {
+    loadConversation();
+});
+
+// 保存对话内容到 sessionStorage
+function saveConversation() {
+    const conversationDiv = document.getElementById('conversation');
+    const conversationContent = conversationDiv.innerHTML;
+    sessionStorage.setItem('conversationContent', conversationContent);
+}
+
+// 恢复对话内容
+function loadConversation() {
+    const conversationContent = sessionStorage.getItem('conversationContent');
+    if (conversationContent) {
+        document.getElementById('conversation').innerHTML = conversationContent;
+    }
 }
